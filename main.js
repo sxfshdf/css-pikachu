@@ -1,21 +1,44 @@
 !function(){
+
+  $('.actions').on('click','button',function(e){
+    let $button = $(e.currentTarget) // 获取 button
+    let speed = $button.attr('data-speed') // 获取 speed 属性 
+    $button.addClass('active').siblings('.active').removeClass('active')
+    switch(speed){
+      case 'slow':
+        duration = 100
+        break
+      case 'normal':
+        duration = 50
+        break
+      case 'fast':
+        duration = 10
+        break
+    }
+  })
+  
+  let duration = 50
   function writeCode(preCode,code,fn){
     let container = document.querySelector('#code')
     let styleTag = document.querySelector('#styleTag')
     let n = 0
-    let timer = setInterval(()=>{
+    setTimeout(function run(){
       n += 1
       container.innerHTML = preCode + code.substring(0,n)
       styleTag.innerHTML = preCode + code.substring(0,n)
       container.scrollTop = container.scrollHeight
-      if( n >= code.length){
-        window.clearInterval(timer)
+      if( n < code.length){
+        setTimeout(run,duration)
+      }else{
         fn && fn.call()
       }
-    },10)
+    },duration)
   }
 
   let code = `
+
+  /* 先准备皮卡丘的皮肤 */
+
   .preview{
     height: 100%;
     display: flex;
@@ -28,6 +51,9 @@
     width: 320px;
     position: relative;
   }
+
+  /* 接下来画鼻子 */
+
   .nose{
     height: 0;
     width: 0;
@@ -41,6 +67,8 @@
     top: 32px;
   }
  
+  /* 然后是左边的眼睛 */
+
   .eye.left{
     height: 56px;
     width: 56px;
@@ -63,6 +91,9 @@
     left: 8px;
     border: 2px solid black;
   }
+
+  /* 右边的眼睛 */
+
   .eye.right{
     height: 56px;
     width: 56px;
@@ -85,6 +116,9 @@
     left: 8px;
     border: 2px solid black;
   }
+
+  /* 再画上边的嘴巴 */
+
   .upperLip-left{
     width: 72px;
     height: 26px;
@@ -113,6 +147,9 @@
     margin-right: -72px;
     transform: rotate(25deg);
   }
+
+  /* 然后是嘴巴下面部分 */
+
   .lowerLip-wrapper{
     height: 157px;
     width: 320px;
@@ -146,6 +183,9 @@
     margin-left: -65px;
     border-radius: 50%;
   }
+
+  /* 最后画上两边的脸颊 */
+
   .face.left{
     width: 72px;
     height: 72px;
@@ -168,6 +208,8 @@
     border-radius: 50%;
     border: 2px solid #000;
   }
+
+  /* 完成 */
   `
 
   writeCode('',code)
